@@ -1,0 +1,111 @@
+---
+title: "TODO: Indicator Name"
+subtitle: "TODO: EPA's one-line subtitle for this indicator."
+---
+
+```{r}
+#| label: setup
+#| include: false
+source(here::here("_common.R"))
+source(here::here("R/figures.R"))
+meta <- read_meta()
+```
+
+```{r}
+#| label: caption-block
+#| include: false
+# Renders a figure's caption strip from data/meta.yml: title, data source, and
+# web-update date, all copied verbatim from the CSV EPA published. Nothing here
+# is hand-typed, so it cannot drift from the source file.
+caption_block <- function(file) {
+  m <- meta_for(file, meta)
+  knitr::asis_output(sprintf(
+    "**%s**\n\nData source: %s <br> Web update: %s\n",
+    m$figure_title, m$data_source, m$web_update
+  ))
+}
+```
+
+<!--
+TODO: this indicator may have a different number of figures than
+heat-related-deaths' three. Duplicate or delete the figure blocks below to
+match. Each block's file name (e.g. "figure_1.csv") must match what
+R/build_data.R writes to data/ and what data/meta.yml documents.
+-->
+
+## Figure 1
+
+```{r}
+#| label: fig-1-caption
+#| echo: false
+#| output: asis
+caption_block("TODO_figure_1.csv")
+```
+
+```{r}
+#| label: fig-1
+#| echo: false
+fig_1()
+```
+
+<details><summary>Show the data behind this figure</summary>
+
+```{r}
+#| label: fig-1-table
+#| echo: false
+knitr::kable(fig_1_table(), digits = 3)
+```
+
+Download: [tidy CSV](data/TODO_figure_1.csv) · [original EPA file](data-raw/TODO_source_1.csv)
+
+</details>
+
+## Key Points
+
+- TODO: EPA's key points, extracted verbatim (see `R/gen_narrative.R` /
+  `narrative_generated.md`) and cross-checked against the live snapshot page.
+
+## Background
+
+TODO: EPA's background prose, extracted verbatim.
+
+## About the Indicator
+
+TODO: EPA's "about the indicator" prose, extracted verbatim.
+
+## About the Data
+
+### Indicator Notes
+
+TODO: EPA's indicator notes, extracted verbatim.
+
+### Data Sources
+
+TODO: EPA's data sources paragraph, extracted verbatim. Cross-check every URL
+against the live page — heat-related-deaths' archived docx had two CDC URLs
+that had since changed on the published page.
+
+## Technical Documentation
+
+```{r}
+#| label: td-link
+#| echo: false
+#| output: asis
+cat(sprintf("- [Download related technical information (PDF)](%s)\n", meta$indicator$technical_documentation))
+```
+
+## References
+
+<!--
+TODO: EPA's numbered reference list, extracted via R/gen_narrative.R as an
+<ol class="references"> with id="ref-N" anchors, so body superscripts like
+"^9,10^" link to them. See heat-related-deaths' index.qmd for the exact
+output shape gen_narrative.R produces.
+-->
+
+::: {.callout-note appearance="simple" icon=false}
+Text on this page is EPA's own published wording (a U.S. Government work, not
+subject to domestic copyright), extracted from EPA's source document and
+verified paragraph by paragraph against the published page. See
+`R/gen_narrative.R` and `NOTICE.md`.
+:::

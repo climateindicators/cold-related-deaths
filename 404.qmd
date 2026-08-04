@@ -1,0 +1,8 @@
+---
+title: "Page not found"
+---
+
+That page does not exist here.
+
+- [TODO: Indicator Name](index.qmd), the indicator
+- [Data & Downloads](data.qmd)
