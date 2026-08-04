@@ -75,12 +75,22 @@ for (d in meta$datasets) {
   cat("\n### ", d$figure, ": `", d$file, "`\n\n", sep = "")
   cat("> ", d$figure_title, "\n\n", sep = "")
 
-  facts <- data.frame(
-    Field = c("Rows", "Unit", "Data source", "Web update", "Built from", "Source encoding"),
-    Value = c(as.character(d$rows), d$unit, d$data_source, d$web_update,
-              paste0("`", d$source_file, "`"), d$source_encoding),
-    check.names = FALSE
-  )
+  # Field/value pairs are built up rather than a fixed vector: how a source
+  # file is read varies by indicator (a CSV has an encoding to record, an
+  # xlsx workbook has a sheet name instead), and a fixed-length Field vector
+  # zipped against a Value vector with a missing element is a silent
+  # data.frame() row-count error, not a graceful blank cell.
+  fact <- function(field, value) if (is.null(value)) NULL else list(Field = field, Value = value)
+  facts_list <- Filter(Negate(is.null), list(
+    fact("Rows", as.character(d$rows)),
+    fact("Unit", d$unit),
+    fact("Data source", d$data_source),
+    fact("Web update", d$web_update),
+    fact("Built from", paste0("`", d$source_file, "`")),
+    fact("Source sheet", d$source_sheet),
+    fact("Source encoding", d$source_encoding)
+  ))
+  facts <- do.call(rbind, lapply(facts_list, as.data.frame, stringsAsFactors = FALSE))
   print(knitr::kable(facts, row.names = FALSE))
   cat("\n\n")
 

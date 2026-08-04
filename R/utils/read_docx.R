@@ -46,10 +46,18 @@ docx_paragraphs_xml <- function(doc) {
 # union expression is what keeps w:delText / w:delInstrText / w:instrText out
 # entirely (they are never named, so ZOTERO field codes cannot leak) and needs
 # no special case for w:ins (its w:t simply has no w:del ancestor).
+#
+# w:endnoteReference is a citation marker, not text: some EPA documents cite
+# sources with real Word endnotes (rStyle EndnoteReference) rather than typed
+# superscript numbers. Selecting it here and rendering its raw w:id as a
+# superscript digit (below) means it merges with any adjacent hand-typed
+# superscript separator exactly like heat-related-deaths' literal "^9,10^"
+# case, instead of silently vanishing.
 LEAF_XPATH <- paste(
   ".//w:t[not(ancestor::w:del)]",
   ".//w:br[not(ancestor::w:del)]",
   ".//w:tab[not(ancestor::w:del)]",
+  ".//w:endnoteReference[not(ancestor::w:del)]",
   sep = " | "
 )
 
@@ -93,7 +101,15 @@ paragraph_markdown <- function(p, rels) {
 
   seg <- lapply(leaves, function(leaf) {
     nm <- xml2::xml_name(leaf)
-    text <- if (nm == "t") xml2::xml_text(leaf) else if (nm == "tab") "\t" else "\n"
+    text <- if (nm == "t") {
+      xml2::xml_text(leaf)
+    } else if (nm == "tab") {
+      "\t"
+    } else if (nm == "endnoteReference") {
+      xml2::xml_attr(leaf, "id")
+    } else {
+      "\n"
+    }
 
     run <- xml2::xml_find_first(leaf, "ancestor::w:r[1]", W_NS)
     rpr <- if (!is.na(run)) xml2::xml_find_first(run, "./w:rPr", W_NS) else NA
@@ -103,7 +119,10 @@ paragraph_markdown <- function(p, rels) {
     valign <- if (!is.na(rpr)) {
       xml2::xml_attr(xml2::xml_find_first(rpr, "./w:vertAlign", W_NS), "val")
     } else NA_character_
-    superscript <- identical(valign, "superscript")
+    # An endnote marker's superscript styling comes from its rStyle
+    # (EndnoteReference), not a raw w:vertAlign, so it is forced here rather
+    # than detected.
+    superscript <- identical(valign, "superscript") || nm == "endnoteReference"
 
     hl <- xml2::xml_find_first(leaf, "ancestor::w:hyperlink[1]", W_NS)
     href <- if (!is.na(hl)) {
@@ -192,6 +211,59 @@ read_docx_paragraphs <- function(path) {
   df$text_plain <- gsub("\\\\|\\*\\*|\\*|_|\\^|\\[|\\]\\([^)]*\\)", "", df$text_md)
   df$empty <- trimws(df$text_md) == ""
   df
+}
+
+#' Read word/endnotes.xml: the bibliography behind w:endnoteReference markers.
+#'
+#' Word reserves ids -1, 0, 1 for the separator/continuationSeparator/
+#' continuationNotice pseudo-notes that appear in every document regardless of
+#' content; these are dropped here so the caller sees only real citations.
+#'
+#' @return tibble(id, text_md, text_plain), one row per endnote, in id order.
+#'   `id` is the raw w:id, not a display number: a document's ids need not be
+#'   contiguous or start at 1, so the caller must derive display numbering
+#'   from body appearance order (each w:endnoteReference's own id, in the
+#'   order those markers occur in read_docx_paragraphs()' output), not from
+#'   this id column directly.
+docx_endnotes <- function(path) {
+  entry <- "word/endnotes.xml"
+  zf <- utils::unzip(path, list = TRUE)
+  if (!entry %in% zf$Name) {
+    return(data.frame(id = character(), text_md = character(),
+                      text_plain = character(), stringsAsFactors = FALSE))
+  }
+  con <- unz(path, entry, open = "rb")
+  on.exit(close(con), add = TRUE)
+  n <- zf$Length[zf$Name == entry]
+  doc <- xml2::read_xml(readBin(con, "raw", n = n))
+
+  rels_entry <- "word/_rels/endnotes.xml.rels"
+  rels <- if (rels_entry %in% zf$Name) {
+    rcon <- unz(path, rels_entry, open = "rb")
+    on.exit(close(rcon), add = TRUE)
+    rn <- zf$Length[zf$Name == rels_entry]
+    r <- xml2::read_xml(readBin(rcon, "raw", n = rn))
+    ids <- xml2::xml_attr(xml2::xml_find_all(r, "//*[local-name()='Relationship']"), "Id")
+    targets <- xml2::xml_attr(xml2::xml_find_all(r, "//*[local-name()='Relationship']"), "Target")
+    stats::setNames(targets, ids)
+  } else {
+    character(0)
+  }
+
+  notes <- xml2::xml_find_all(doc, "/w:endnotes/w:endnote", W_NS)
+  keep <- !xml2::xml_attr(notes, "type") %in%
+    c("separator", "continuationSeparator", "continuationNotice")
+  notes <- notes[keep]
+
+  ids <- xml2::xml_attr(notes, "id")
+  text_md <- vapply(notes, function(note) {
+    ps <- xml2::xml_find_all(note, ".//w:p", W_NS)
+    paste(vapply(ps, paragraph_markdown, character(1), rels = rels), collapse = "\n")
+  }, character(1))
+  text_plain <- gsub("\\\\|\\*\\*|\\*|_|\\^|\\[|\\]\\([^)]*\\)", "", text_md)
+
+  data.frame(id = ids, text_md = trimws(text_md), text_plain = trimws(text_plain),
+            stringsAsFactors = FALSE)
 }
 
 #' Split paragraphs into named sections at Heading1/Heading2 boundaries.

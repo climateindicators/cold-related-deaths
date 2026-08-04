@@ -11,3 +11,4 @@ Thumbs.db
 .claude/settings.local.json
 
 /.quarto/
+narrative_generated.md

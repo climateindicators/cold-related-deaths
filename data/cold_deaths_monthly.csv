@@ -1,0 +1,13 @@
+month,month_num,measure,unit,value
+January,1,monthly_total_deaths,deaths,5534
+February,2,monthly_total_deaths,deaths,4209
+March,3,monthly_total_deaths,deaths,2461
+April,4,monthly_total_deaths,deaths,1207
+May,5,monthly_total_deaths,deaths,653
+June,6,monthly_total_deaths,deaths,369
+July,7,monthly_total_deaths,deaths,329
+August,8,monthly_total_deaths,deaths,276
+September,9,monthly_total_deaths,deaths,455
+October,10,monthly_total_deaths,deaths,1054
+November,11,monthly_total_deaths,deaths,2251
+December,12,monthly_total_deaths,deaths,4554

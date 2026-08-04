@@ -70,5 +70,38 @@ check("partition suppressible", {
   is.null(s2$partition) && length(s2$broken) == 0L
 })
 
+# ---- real-data cases ---------------------------------------------------------
+#
+# Now that data/ exists (see R/build_data.R), pick_chart() is exercised
+# against this indicator's own two figures, mirroring the synthetic checks
+# above but against the actual generated tables rather than fixtures.
+
+if (dir.exists("data") && file.exists("data/cold_deaths_annual.csv")) {
+  cat("\n== cold-related-deaths real data ==\n")
+
+  rd <- function(f) {
+    readr::read_csv(file.path("data", f),
+                    col_types = readr::cols(.default = readr::col_character()),
+                    na = character(), progress = FALSE)
+  }
+
+  f1 <- rd("cold_deaths_annual.csv")
+  s  <- pick_chart(f1, x = "year", series = "series_key", partition = "icd_revision")
+  check("Figure 1: line chart",              s$chart == "line")
+  check("Figure 1: 2 series",                s$n_series == 2L)
+  check("Figure 1: direct labelling",        s$label_style == "direct")
+  check("Figure 1: underlying is broken by icd_revision",
+        identical(s$broken, "underlying"))
+  check("Figure 1: single panel (one unit)", s$layout == "single")
+
+  td1 <- rd("cold_deaths_monthly.csv")
+  s2  <- pick_chart(td1, x = "month", series = NULL, partition = NA)
+  check("Figure TD-1: bar chart",            s2$chart == "bar")
+  check("Figure TD-1: categorical x",        s2$x_type == "categorical")
+  check("Figure TD-1: single series",        s2$n_series == 1L)
+} else {
+  cat("\n(skipping real-data cases: data/ not built yet -- run R/build_data.R)\n")
+}
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail))
 if (fail > 0L) quit(status = 1L)

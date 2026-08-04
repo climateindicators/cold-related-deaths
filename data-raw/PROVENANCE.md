@@ -5,73 +5,105 @@ as part of their official duties, and is therefore not subject to domestic
 copyright (17 U.S.C. 105). It is reproduced here unmodified.
 
 Indicator page (the canonical source, January 19 2025 snapshot):
-<https://19january2025snapshot.epa.gov/climate-indicators/climate-change-indicators-heat-related-deaths>
+<https://19january2025snapshot.epa.gov/climate-indicators/climate-change-indicators-cold-related-deaths>
 
 Technical documentation (PDF, not vendored here):
-<https://19january2025snapshot.epa.gov/system/files/documents/2024-06/heat-deaths_documentation.pdf>
+<https://19january2025snapshot.epa.gov/sites/default/files/2021-04/documents/cold-deaths_td.pdf>
 
 ## Files
 
 | File | sha256 | Origin |
 |---|---|---|
-| `heat-deaths_fig-1.csv` | `727556e6…b6f67` | EPA figure 1 data download |
-| `heat-deaths_fig-2.csv` | `fd16a4f7…d13eb` | EPA figure 2 data download |
-| `heat-deaths_example.csv` | `543fe8bd…fc580` | EPA example figure data download |
-| `epa-figure-1.png` | `29a1f6c1…16c07` | `word/media/image1.png` from the text doc |
-| `epa-figure-2.png` | `bc5909b5…55b1e` | `word/media/image2.png` |
-| `epa-figure-example.png` | `b50275cd…0e04c` | `word/media/image3.png` |
+| `cold-deaths_figure-1-and-TD1_04-08-19.xlsx` | `4751ee5b…943d5` | ERG's internal indicator workbook |
 
-The three CSVs were copied from the local archive at
-`…/archive/Excel Files - Indicator Workbooks (for published indicator updates as of 7-23-2026)/Heat-related deaths/`
-and verified byte-identical to their source. They are also downloadable from EPA:
+Copied from the local archive at
+`…/archive/Excel Files - Indicator Workbooks (for published indicator updates as of 7-23-2026)/Cold-related deaths/`
+and verified byte-identical to that copy (both hash to `4751ee5b…943d5`).
 
-- <https://19january2025snapshot.epa.gov/system/files/other-files/2024-06/heat-deaths_fig-1.csv>
-- <https://19january2025snapshot.epa.gov/system/files/other-files/2024-06/heat-deaths_fig-2.csv>
-- <https://19january2025snapshot.epa.gov/sites/default/files/2016-08/heat-deaths_example.csv>
+This is one level more raw than heat-related-deaths' vendored CSVs: it is
+ERG's own internal workbook (data pulls, unit-conversion calculations, and the
+two chart sheets), not EPA's public per-figure CSV download. EPA does publish
+a public CSV for Figure 1 (`cold-deaths_fig-1.csv`, web-updated April 2021,
+at `https://19january2025snapshot.epa.gov/sites/default/files/2021-04/cold-deaths_fig-1.csv`)
+and its numbers were checked against this workbook's `Data for Figure 1` sheet
+byte for byte (values agree to the public file's own precision, which is 3
+decimal places for the underlying-cause column and 9 for the underlying-or-
+contributing column — an inconsistency in EPA's own publication, not
+introduced here). The workbook was kept as the vendored source, by request,
+because `R/build_data.R` reads two of its sheets directly:
 
-The three PNGs are EPA's own rendered charts, lifted out of the text document.
-They are kept as visual ground truth so our charts can be checked against what
-EPA actually published. They are not used by the site.
+- `Data for Figure 1` (annual crude death rate per million, both series) — the
+  only figure on the published indicator page.
+- `Data for Figure TD-1` (deaths by month, 1999–2015, totalled across the
+  period of record) — **not** on the published indicator page. It is EPA's
+  own supplementary Figure TD-1, published only in the technical
+  documentation (see the PDF above, page 6, and `cold-deaths_TD.docx` below).
+  It is built here anyway, as a second figure on this site, because the data
+  exists, is genuinely useful (it is the seasonality behind Figure 1's blue
+  line — see `R/build_data.R`'s conservation check tying the two together),
+  and `R/utils/pick_chart.R` picks a bar chart for it cleanly (categorical
+  month axis, single series). Both figures are labelled honestly in
+  `index.qmd`: TD-1's block says outright that it is not part of the
+  published page.
+
+Six further sheets in the workbook (`Calculations`, `Contributing cause data -
+CDC`, `Underlying deaths 1979-1998`, `Underlying deaths 1999-2016`, and the
+two chart sheets `Figure 1` / `Figure TD-1`) are ERG's working data behind the
+two sheets above. They are reproduced as part of the vendored file but nothing
+in `R/build_data.R` reads them; `Data for Figure 1` and `Data for Figure TD-1`
+are already the finished, chart-ready numbers.
 
 ## Source documents deliberately NOT vendored
 
-The indicator prose was extracted once from these two Word files, which live in
-the archive and are **not** copied into this repository:
+The indicator prose was extracted once from these archived Word files, which
+live in the local archive and are **not** copied into this repository:
 
 | File | sha256 |
 |---|---|
-| `heat-deaths_text_07-08-24.docx` | `de1d5857…41d71` |
-| `heat-deaths_TD_06-02-24 CLEAN.docx` | `76b1003a…8e5ed` |
+| `cold-deaths_April 2021.docx` | `21c08bd3…7cb190` |
+| `cold-deaths_TD.docx` | `d3bccad3…8ec0a4e` |
 
-Two reasons they stay out. First, the prose now lives in `index.qmd`, which is
-the artifact the site renders and the thing to edit; keeping a second copy of the
-same words in a binary format invites the two to disagree. Second, both files
-carry tracked changes, `word/comments.xml`, and `word/people.xml`, so committing
-them would publish EPA reviewers' names and internal editorial comments, which
-are not part of the published page.
+Reasons they stay out, same as heat-related-deaths: the prose now lives in
+`index.qmd`, the artifact the site renders, and a second copy in a binary
+format invites the two to disagree; and Word documents of this kind routinely
+carry tracked-change and reviewer metadata that is not part of the published
+page.
 
-`R/gen_narrative.R` can regenerate the prose from the archive for anyone who has
-it. The checksums above identify the exact revisions used.
+`cold-deaths_April 2021.docx` is the indicator page text: Key Points,
+Background, About the Indicator, Indicator Notes, Data Sources, and Figure 1's
+own title/caption, plus 14 numbered citations. Unlike heat-related-deaths'
+source document, this one cites sources with real Word endnotes
+(`w:endnoteReference` + `word/endnotes.xml`), not typed superscript numbers;
+`R/utils/read_docx.R` was extended to read those generically, and
+`R/gen_narrative.R` derives the 1–14 a reader sees from the order those
+markers appear in the body (Word's internal ids are not guaranteed to be
+contiguous or to start at 1).
 
-## CSV format notes (these bite)
+`cold-deaths_TD.docx` is the technical documentation (methodology, data
+limitations, QA/QC) — the source of the PDF linked above, and the only place
+Figure TD-1's own title, caption, and "Data source: CDC, 2018b" line exist in
+EPA's own words. `R/gen_narrative.R` pulls only that one figure block from it;
+the rest of the technical documentation is linked, not reproduced, exactly as
+heat-related-deaths does.
 
-All three CSVs are **windows-1252 encoded, not UTF-8**. The degree sign in
-`heat-deaths_example.csv` is a raw `0xB0`, and the en dash in
-`heat-deaths_fig-2.csv`'s title line is a raw `0x96`. Read them with an explicit
-`windows-1252` locale or every non-ASCII character becomes mojibake.
+`R/gen_narrative.R` can regenerate the prose from the archive for anyone who
+has it. The checksums above identify the exact revisions used.
 
-Layout is identical across all three: metadata on lines 1 to 5, a blank line 6,
-the header on line 7, data from line 8. So `skip = 6`.
+## Precision
 
-Line 1 titles are inconsistent between files, and this is EPA's inconsistency,
-not a transcription error: figure 1 uses an ASCII hyphen in `1979-2022` while
-figure 2 uses an en dash in `1999–2022`.
+Values are read from the workbook as IEEE 754 doubles (via `readxl`), not
+parsed from formatted text, so there is no source-file decimal precision to
+preserve byte for byte the way `R/utils/epa_csv.R` preserves a published CSV's
+digits. `R/build_data.R` rounds every rate to 8 decimal places: enough to
+exceed CDC WONDER's own stated precision setting (9 decimal places at the
+per-100,000 scale, i.e. 8 at the per-million scale this indicator uses — see
+the workbook's `Methods and Notes` sheet), so nothing meaningful is lost, and
+fixed so reruns are byte-identical.
 
 ## Updating the data
 
-Replace the CSV(s) in this folder and rerun `R/build_data.R`. Nothing else needs
-to change and no manual editing is involved. The build reads the header row to
-identify series rather than relying on column position, so added years flow
-through automatically; a renamed or reordered column stops the build with a clear
-error instead of silently mismatching a series. Update the table above with the
-new sha256 and note the new EPA "Web update" date.
+Replace the workbook in this folder and rerun `R/build_data.R`. The build
+reads `Data for Figure 1` and `Data for Figure TD-1` by their header cells,
+not by column position, so a renamed or reordered column stops the build with
+a clear error instead of silently mismatching a series. Update the table above
+with the new sha256.

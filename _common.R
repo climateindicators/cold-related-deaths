@@ -63,32 +63,19 @@ theme_indicator <- function(base_size = 13) {
 }
 
 # Series colours, keyed by the machine-readable series key from data/. Never by
-# position: the Figure 2 caption names its colours in a different order than the
-# source file lists its columns, so an index-based lookup would swap two series
-# and still look plausible.
+# position, to keep the same convention as every other indicator built from
+# this template even though this one has no position/legend-order mismatch to
+# guard against.
 #
-# Palette is the validated three-slot categorical set (blue/orange/aqua,
-# CVD delta-E >= 8 all-pairs, both checked with
-# dataviz/scripts/validate_palette.js), assigned by a fixed rule rather than
-# cycled or picked to resemble any other chart: slot 1 (blue) is always the
-# baseline/reference series, slot 2 (orange) is the series most worth the
-# reader's attention, slot 3 (aqua) is a second comparison series. The same
-# rule is applied independently on all three figures.
+# Palette is the validated two-slot categorical set (blue/orange,
+# CVD delta-E >= 8, checked with dataviz/scripts/validate_palette.js),
+# assigned by a fixed rule rather than cycled: slot 1 (blue) is always the
+# baseline/narrower series, slot 2 (orange) is the broader series most worth
+# the reader's attention.
 INDICATOR_COLOURS <- c(
-  # Figure 1: the full-history measure is the baseline; the broader May-Sept
-  # method is the higher, more complete picture and gets the attention colour.
-  underlying_all_year                = "#2a78d6",
-  underlying_or_contributing_may_sep = "#eb6834",
-  # Figure 2: the general population is the baseline; people 65+ carry
-  # meaningfully elevated risk and get the attention colour; non-Hispanic
-  # Black people are the second comparison series.
-  general                            = "#2a78d6",
-  age_65_plus                        = "#eb6834",
-  nh_black                           = "#1baf7a",
-  # Example figure: the 1990-2000 average is the baseline; 1995 is the event
-  # being illustrated. Temperature sits in its own panel and reuses the
-  # comparison slot to stay visually distinct from both death series.
-  deaths_avg_1990_2000               = "#2a78d6",
-  deaths_1995                        = "#eb6834",
-  high_temp_f                        = "#1baf7a"
+  # Figure 1: underlying-cause-only is the narrower, longer-running measure
+  # and is the baseline; underlying-or-contributing is the broader, higher
+  # picture and gets the attention colour.
+  underlying                 = "#2a78d6",
+  underlying_or_contributing = "#eb6834"
 )

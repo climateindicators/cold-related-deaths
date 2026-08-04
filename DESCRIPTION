@@ -1,6 +1,6 @@
 Type: Website
-Package: indicator.slug.here
-Title: TODO Climate Indicator
+Package: cold.related.deaths
+Title: Cold-Related Deaths Climate Indicator
 Depends: R (>= 4.4.0)
 License: CC-BY-SA
 Encoding: UTF-8
@@ -11,6 +11,7 @@ Imports:
     here,
     knitr,
     readr,
+    readxl,
     rmarkdown,
     tibble,
     tidyr,

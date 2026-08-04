@@ -1,0 +1,56 @@
+year,series_key,series_label,icd_revision,measure,unit,value
+1979,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.5847903
+1980,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.3326016
+1981,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.25932778
+1982,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.73499149
+1983,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,2.18152193
+1984,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.52168846
+1985,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,2.18061991
+1986,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.25317519
+1987,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.34491204
+1988,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.76168627
+1989,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,2.12144236
+1990,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.28554269
+1991,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.16560216
+1992,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.0405038
+1993,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.25757314
+1994,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.32577893
+1995,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,0.89343835
+1996,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,1.33560495
+1997,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,0.98982069
+1998,underlying,Underlying cause of death,ICD-9,death_rate,death rate per million people,0.72817421
+1999,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.14306064
+1999,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.46889066
+2000,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.63661067
+2000,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.75442733
+2001,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.10198335
+2001,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,3.77935905
+2002,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.2459785
+2002,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,3.90091003
+2003,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.13713563
+2003,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.39146902
+2004,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.30870139
+2004,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.3100313
+2005,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.36873327
+2005,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.62579769
+2006,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,1.73939323
+2006,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,3.54581511
+2007,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.36031322
+2007,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.62435487
+2008,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.10790108
+2008,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.51834023
+2009,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.00800903
+2009,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.46260448
+2010,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.29962838
+2010,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.97173177
+2011,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.15666698
+2011,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,4.85250071
+2012,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,1.57367922
+2012,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,3.73032057
+2013,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.29336875
+2013,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,5.09918679
+2014,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.91666746
+2014,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,5.93369337
+2015,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.53563248
+2015,underlying_or_contributing,Underlying and contributing causes of death,ICD-10,death_rate,death rate per million people,5.44149842
+2016,underlying,Underlying cause of death,ICD-10,death_rate,death rate per million people,2.2622648

@@ -15,8 +15,8 @@ project:
     - data-raw/
 
 website:
-  title: "TODO: Indicator Name"
-  description: "TODO: one-sentence description, rebuilt from EPA's published data."
+  title: "Cold-Related Deaths"
+  description: "EPA's Cold-Related Deaths climate indicator, rebuilt from its published data."
   back-to-top-navigation: true
 
   navbar:
