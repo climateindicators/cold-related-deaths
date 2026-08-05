@@ -69,10 +69,10 @@ Download: [tidy CSV](data/cold_deaths_annual.csv) ·
 
 ::: {.callout-note appearance="simple" icon=false}
 This figure is not part of EPA's published indicator page. It is EPA's own
-supplementary Figure TD-1 from the [technical
-documentation](`r meta$indicator$technical_documentation`), built here
-because the data exists and shows the seasonal pattern behind Figure 1's
-underlying-or-contributing series (its blue line's 1999-2015 deaths,
+supplementary Figure TD-1 from the technical documentation (see the
+[Technical Documentation](#technical-documentation) section below), built
+here because the data exists and shows the seasonal pattern behind Figure
+1's underlying-or-contributing series (its blue line's 1999-2015 deaths,
 aggregated by calendar month instead of by year). See
 [Data & Downloads](data.qmd) and `data-raw/PROVENANCE.md` for details.
 :::
