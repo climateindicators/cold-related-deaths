@@ -38,13 +38,11 @@ because `R/build_data.R` reads two of its sheets directly:
   period of record) — **not** on the published indicator page. It is EPA's
   own supplementary Figure TD-1, published only in the technical
   documentation (see the PDF above, page 6, and `cold-deaths_TD.docx` below).
-  It is built here anyway, as a second figure on this site, because the data
-  exists, is genuinely useful (it is the seasonality behind Figure 1's blue
-  line — see `R/build_data.R`'s conservation check tying the two together),
-  and `R/utils/pick_chart.R` picks a bar chart for it cleanly (categorical
-  month axis, single series). Both figures are labelled honestly in
-  `index.qmd`: TD-1's block says outright that it is not part of the
-  published page.
+  It is built here anyway, because the data exists and is genuinely useful:
+  it is the seasonality behind Figure 1's underlying-or-contributing series —
+  see `R/build_data.R`'s conservation check tying the two together. Anything
+  presenting it must say outright that it is not part of the published page,
+  which the indicator page on climateindicators.us does.
 
 Six further sheets in the workbook (`Calculations`, `Contributing cause data -
 CDC`, `Underlying deaths 1979-1998`, `Underlying deaths 1999-2016`, and the
@@ -53,21 +51,23 @@ two sheets above. They are reproduced as part of the vendored file but nothing
 in `R/build_data.R` reads them; `Data for Figure 1` and `Data for Figure TD-1`
 are already the finished, chart-ready numbers.
 
-## Source documents deliberately NOT vendored
+## Source documents for the prose
 
-The indicator prose was extracted once from these archived Word files, which
-live in the local archive and are **not** copied into this repository:
+The indicator prose is extracted from these Word files, copied here unmodified
+from the local archive at
+`…/archive/Word Files - Indicator Text and TD  (for published indicator updates as of 7-23-2026)/Cold-related deaths/`:
 
 | File | sha256 |
 |---|---|
 | `cold-deaths_April 2021.docx` | `21c08bd3…7cb190` |
 | `cold-deaths_TD.docx` | `d3bccad3…8ec0a4e` |
 
-Reasons they stay out, same as heat-related-deaths: the prose now lives in
-`index.qmd`, the artifact the site renders, and a second copy in a binary
-format invites the two to disagree; and Word documents of this kind routinely
-carry tracked-change and reviewer metadata that is not part of the published
-page.
+They are vendored so the extraction is reproducible from this repository
+alone: `R/gen_narrative.R` reads them and writes `narrative.qmd`, which is a
+generated artifact, not a hand-edited one. Note that Word documents of this
+kind routinely carry tracked-change and reviewer metadata that is not part of
+the published page — `R/utils/read_docx.R` reproduces the accept-all-tracked-
+changes rendering and never opens `comments.xml`.
 
 `cold-deaths_April 2021.docx` is the indicator page text: Key Points,
 Background, About the Indicator, Indicator Notes, Data Sources, and Figure 1's
@@ -83,11 +83,9 @@ contiguous or to start at 1).
 limitations, QA/QC) — the source of the PDF linked above, and the only place
 Figure TD-1's own title, caption, and "Data source: CDC, 2018b" line exist in
 EPA's own words. `R/gen_narrative.R` pulls only that one figure block from it;
-the rest of the technical documentation is linked, not reproduced, exactly as
-heat-related-deaths does.
+the rest of the technical documentation is linked, not reproduced.
 
-`R/gen_narrative.R` can regenerate the prose from the archive for anyone who
-has it. The checksums above identify the exact revisions used.
+The checksums above identify the exact revisions used.
 
 ## Precision
 

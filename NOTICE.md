@@ -20,17 +20,19 @@ series, and CDC's Environmental Public Health Tracking Program for the
 monthly figure. See the indicator's technical documentation for details.
 
 Files in `data-raw/` are reproduced unmodified. Files in `data/` are
-reformatted, not altered: values are copied across as text, so the source
-precision is preserved exactly. Every transformation is in `R/build_data.R` and
-is checked against the originals by `tests/test-data.R`.
+reformatted, not altered: rates are rounded to 8 decimal places, beyond the
+source's own meaningful precision (see `data-raw/PROVENANCE.md`). Every
+transformation is in `R/build_data.R` and is checked by `tests/test-data.R`.
+`narrative.qmd` is EPA's published wording, extracted from the Word documents
+in `data-raw/` by `R/gen_narrative.R`.
 
 ## This rebuild
 
-Code, site design, and the derived data schema are licensed CC-BY-SA.
+Code and the derived data schema are licensed CC-BY-SA.
 
 This is an independent project. It is **not** affiliated with, endorsed by, or
 approved by the U.S. Environmental Protection Agency or the U.S. Centers for
-Disease Control and Prevention (the underlying data source agency). Where
-this site departs from EPA's published presentation — most notably, Figure
-TD-1 is not part of EPA's published indicator page — those departures are
-documented in `data-raw/PROVENANCE.md` and on the Data & Downloads page.
+Disease Control and Prevention (the underlying data source agency). Where this
+project departs from EPA's published presentation — most notably, Figure TD-1
+is not part of EPA's published indicator page — those departures are
+documented in `data-raw/PROVENANCE.md`.

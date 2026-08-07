@@ -1,15 +1,8 @@
-# Byte-stable writers.
+# Byte-stable writers. See CLAUDE.md for why generated output must be
+# byte-identical across reruns and machines.
 #
-# Generated files are committed, so rerunning the build with unchanged inputs
-# must produce byte-identical output or every rebuild shows up as noise in the
-# diff. Three things break that on Windows, and each is handled here:
-#
-# 1. Text connections translate "\n" to CRLF. Every write below goes through a
-#    binary connection or an explicit eol.
-# 2. Anything derived from Sys.time() or Sys.Date() changes on every run. No
-#    generated file carries a timestamp; provenance is the source checksum.
-# 3. Locale-dependent sorting reorders rows between machines. Callers order
-#    rows with match() against an explicit level vector, never a string sort.
+# Every write goes through a binary connection or an explicit eol, because a
+# text connection translates "\n" to CRLF on Windows.
 
 #' Write a CSV: UTF-8, no BOM, LF endings, quote only where needed.
 write_csv_stable <- function(x, path) {
@@ -23,6 +16,14 @@ write_yaml_stable <- function(x, path) {
   con <- file(path, open = "wb")
   on.exit(close(con), add = TRUE)
   writeChar(txt, con, eos = NULL)
+  invisible(path)
+}
+
+#' Write character lines through a binary connection, LF-terminated.
+write_lines_stable <- function(x, path) {
+  con <- file(path, open = "wb")
+  on.exit(close(con), add = TRUE)
+  writeChar(paste0(paste(x, collapse = "\n"), "\n"), con, eos = NULL)
   invisible(path)
 }
 

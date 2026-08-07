@@ -1,21 +1,14 @@
 # Build tidy long-format data for the Cold-Related Deaths indicator.
 #
-#   "C:\Program Files\R\R-4.5.3\bin\Rscript.exe" R/build_data.R
+#   Rscript R/build_data.R
 #
 # Reads two sheets of ERG's indicator workbook in data-raw/ and writes
-# data/*.csv plus data/meta.yml. Rerunning with unchanged inputs produces
-# byte-identical output. Nothing here touches the network.
+# data/*.csv plus data/meta.yml. See CLAUDE.md for the rules this file follows.
 #
-# TO UPDATE THE DATA: replace the workbook in data-raw/ and rerun. Sheets are
-# read by their header cells, not by column position, so a renamed or
-# reordered column stops the build rather than silently swapping two series.
-#
-# Unlike heat-related-deaths, the source here is not EPA's public per-figure
-# CSV (five-line preamble, windows-1252): it is ERG's internal xlsx workbook,
-# kept as the vendored source by request (see data-raw/PROVENANCE.md). That
-# means R/utils/epa_csv.R does not apply -- there is no preamble to read, and
-# values arrive as IEEE 754 doubles via readxl rather than as precision-
-# preserving text -- so this file reads its own sheets directly instead.
+# The vendored source is ERG's internal xlsx workbook rather than EPA's public
+# per-figure CSV (see data-raw/PROVENANCE.md), so R/utils/epa_csv.R does not
+# apply: there is no preamble to read, and values arrive as IEEE 754 doubles
+# via readxl rather than as precision-preserving text.
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -23,8 +16,7 @@ suppressPackageStartupMessages({
 })
 
 root <- here::here()
-source(file.path(root, "R/utils/write_stable.R"))
-source(file.path(root, "R/utils/pick_chart.R"))
+source(file.path(root, "R", "utils", "write_stable.R"))
 
 raw_dir <- file.path(root, "data-raw")
 out_dir <- file.path(root, "data")
@@ -40,7 +32,6 @@ xlsx_path <- file.path(raw_dir, "cold-deaths_figure-1-and-TD1_04-08-19.xlsx")
 # line without a hand-placed break.
 ICD10_FIRST_YEAR <- 1999L
 
-DEGREE_UNUSED <- NULL # no non-ASCII glyphs needed in this build's own text
 EN_DASH <- intToUtf8(0x2013)
 
 # Rounding, not preserved source-text precision: values arrive as doubles via
@@ -296,17 +287,3 @@ for (p in written) {
   cat(sprintf("  %-30s %6d bytes  %s\n", basename(p), file.size(p), substr(file_sha256(p), 1, 12)))
 }
 cat(sprintf("\nRows: figure 1 = %d, figure TD-1 = %d\n", nrow(f1), nrow(td1)))
-
-# ---- Chart selection sanity check --------------------------------------------
-#
-# Not wired into R/figures.R (which hand-writes ggplot the way
-# heat-related-deaths' does), but run here so a rebuild always confirms
-# R/utils/pick_chart.R reaches the same structural decisions figures.R makes
-# by hand: a line chart with an ICD-revision break for Figure 1, a bar chart
-# for TD-1's categorical month axis.
-
-cat("\n--- pick_chart(): Figure 1 -----------------------------------------\n")
-print(pick_chart(f1, x = "year", series = "series_key", partition = "icd_revision"))
-
-cat("\n--- pick_chart(): Figure TD-1 ---------------------------------------\n")
-print(pick_chart(td1, x = "month", series = NULL, partition = NA))

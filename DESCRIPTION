@@ -1,18 +1,14 @@
-Type: Website
 Package: cold.related.deaths
-Title: Cold-Related Deaths Climate Indicator
+Title: Cold-Related Deaths Climate Indicator: Data and Narrative Pipeline
 Depends: R (>= 4.4.0)
 License: CC-BY-SA
 Encoding: UTF-8
 Imports:
+    digest,
     dplyr,
-    ggplot2,
-    ggiraph,
     here,
-    knitr,
     readr,
     readxl,
-    rmarkdown,
     tibble,
     tidyr,
     xml2,

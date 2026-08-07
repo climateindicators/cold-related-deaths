@@ -12,7 +12,7 @@
 # expectations after checking each one against the new source workbook.
 
 setwd(here::here())
-source("R/utils/write_stable.R")
+source(file.path("R", "utils", "write_stable.R"))
 
 failures <- character()
 check <- function(label, ok) {
@@ -96,11 +96,11 @@ for (f in list.files("data", full.names = TRUE)) {
         tryCatch({ assert_clean_output(f); TRUE }, error = function(e) { cat("      ", conditionMessage(e), "\n"); FALSE }))
 }
 
-meta <- yaml::read_yaml("data/meta.yml")
+meta <- yaml::read_yaml(file.path("data", "meta.yml"))
 check("meta.yml documents both datasets", length(meta$datasets) == 2L)
 check("meta.yml has no timestamp",
       !any(grepl("\\d{4}-\\d{2}-\\d{2}T|Sys\\.time|generated_at",
-                 readLines("data/meta.yml", warn = FALSE))))
+                 readLines(file.path("data", "meta.yml"), warn = FALSE))))
 for (ds in meta$datasets) {
   cols <- vapply(ds$columns, function(x) x$name, character(1))
   actual <- names(rd(ds$file))
