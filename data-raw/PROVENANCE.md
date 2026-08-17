@@ -16,9 +16,9 @@ Technical documentation (PDF, not vendored here):
 |---|---|---|
 | `cold-deaths_figure-1-and-TD1_04-08-19.xlsx` | `4751ee5b…943d5` | ERG's internal indicator workbook |
 
-Copied from the local archive at
-`…/archive/Excel Files - Indicator Workbooks (for published indicator updates as of 7-23-2026)/Cold-related deaths/`
-and verified byte-identical to that copy (both hash to `4751ee5b…943d5`).
+Obtained from EPA via a Freedom of Information Act (FOIA) request, since this
+is ERG's internal indicator workbook rather than a file EPA published on the
+indicator page.
 
 This is one level more raw than heat-related-deaths' vendored CSVs: it is
 ERG's own internal workbook (data pulls, unit-conversion calculations, and the
@@ -53,9 +53,8 @@ are already the finished, chart-ready numbers.
 
 ## Source documents for the prose
 
-The indicator prose is extracted from these Word files, copied here unmodified
-from the local archive at
-`…/archive/Word Files - Indicator Text and TD  (for published indicator updates as of 7-23-2026)/Cold-related deaths/`:
+The indicator prose is extracted from these Word files, copied here unmodified.
+Both were obtained from EPA via a Freedom of Information Act (FOIA) request:
 
 | File | sha256 |
 |---|---|
